@@ -1,0 +1,82 @@
+<html>
+<head>
+<title>Sauerkraut to Eon Calculator</title>
+<style>
+html, body {
+  font-family: arial;
+}
+</style>
+</head>
+<body>
+<center>
+  <div style="height:200px;"></div>
+  <h1>Sauerkraut to Eon Calculator</h1>
+  <table>
+  <tr>
+    <td><img src="" alt="" title="" /></td>
+    <td><h4>Eons:</h4></td>
+    <td><input id="eons" /></td>
+  </tr>
+  <tr>
+    <td><img src="" alt="" title="" /></td>
+    <td><h4>Sauerkraut:</h4></td>
+    <td><input id="outTex" readonly /></td>
+  </tr>
+  </table>
+</center>
+<script>
+const EON_YEARS = 2160;
+const YEAR_DAYS = 365;
+const DAY_HOURS = 24;
+const HOUR_MINUTES = 60;
+const MONTH_WEEKS = 4;
+const WEEK_DAYS = 7;
+const SAUERKRAUT_GROWTH_TIME_MONTH = 2;
+const SAUERKRAUT_WORK_TIME_MINUTES = 35;
+const SAUERKRAUT_FERMENTATION_TIME_WEEKS = 5;
+const SAUERKRAUT_EXPIRATION_TIME_WEEKS = 6;
+
+
+function a2s(aeonen) {
+    /*
+     * Calculates the eons to sauerkraut
+     */
+    a = aeonen;
+    a *= EON_YEARS * YEAR_DAYS * DAY_HOURS * HOUR_MINUTES;
+    s = ((SAUERKRAUT_GROWTH_TIME_MONTH * MONTH_WEEKS) + SAUERKRAUT_EXPIRATION_TIME_WEEKS + SAUERKRAUT_FERMENTATION_TIME_WEEKS) * WEEK_DAYS * DAY_HOURS * HOUR_MINUTES;
+    s += SAUERKRAUT_WORK_TIME_MINUTES;
+    return a / s;
+}
+
+
+function setInputFilter(textbox, inputFilter) {
+  ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+    textbox.addEventListener(event, function() {
+      if (inputFilter(this.value)) {
+        this.oldValue = this.value;
+        this.oldSelectionStart = this.selectionStart;
+        this.oldSelectionEnd = this.selectionEnd;
+      } else if (this.hasOwnProperty("oldValue")) {
+        this.value = this.oldValue;
+        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+      } else {
+        this.value = "";
+      }
+    });
+  });
+}
+
+
+setInputFilter(document.getElementById("eons"), function(value) {
+  return /^-?\d*$/.test(value); });
+
+
+document.getElementById("eons").addEventListener('keyup', function() {
+	var a = parseInt(document.getElementById("eons").value)|0;
+  var outTex = document.getElementById("outTex");
+  a = a2s(a);
+  outTex.value = a;
+});
+</script>
+</body>
+</html>
